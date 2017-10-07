@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/chat"
+		id="onymos-plugin-chat"
+		version="1.0.6">
+
+		<name>OnymosChatComponent</name>
+		<description>Onymos Component - Chat</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid, Chat, Message, Social</keywords>
+
+		<js-module src="www/OnymosComponentInitialize.min.js" name="OnymosComponentInitialize">
+			<clobbers target="Chat.OnymosComponentInitialize" />
+		</js-module>
+
+		<js-module src="www/OnymosChat.min.js" name="OnymosChat">   
+			<clobbers target="OnymosChat" />
+		</js-module>
+
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+
+		<!-- android -->
+		<platform name="android">
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosChat">
+						<param name="android-package" value="com.onymos.components.chat.OnymosChatManager"/>
+				</feature>
+			</config-file>
+
+			<source-file	src="src/android/OnymosChatManager.java"
+										target-dir="src/com/onymos/components/chat" />
+		</platform>
+
+		<!-- ios -->
+		<platform name="ios">
+			<config-file target="config.xml" parent="/*">
+				<feature name="OnymosChat">
+					<param name="ios-package" value="OnymosChatManager" />
+				</feature>
+			</config-file>
+
+			<header-file src="src/ios/OnymosChatManager.h" />
+			<source-file src="src/ios/OnymosChatManager.m" />
+		</platform>
+
+</plugin>

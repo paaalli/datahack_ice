@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/fabric"
+		id="onymos-plugin-digime"
+		version="1.0.1">
+
+		<name>OnymosDigiMeComponent</name>
+		<description>Onymos Component - Digime</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid, Message, Social</keywords>
+
+		<js-module src="www/OnymosDigiMe.min.js" name="OnymosDigiMe">   
+			<clobbers target="OnymosDigiMe" />
+		</js-module>
+
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+
+		<!-- android -->
+		<platform name="android">
+
+			<framework src="com.squareup.retrofit2:converter-gson:2.3.0" />			
+			<framework src="com.google.code.gson:gson:2.8.1" />
+			<framework src="com.squareup.okhttp3:logging-interceptor:3.8.0" />
+			<framework src="com.squareup.retrofit2:retrofit:2.3.0" />
+			<framework src="com.android.support:appcompat-v7:25.4.0" />
+			<framework src="com.android.support:design:25.4.0" />
+			<framework src="com.android.support:support-v4:25.0.1" />
+			<framework src="me.digi.sdk:digime-crypto:1.1.0" />	
+			<framework src="digime.gradle" custom="true" type="gradleReference"/>
+			
+			<preference name="APP_ID" value="0000Onymos"/>
+			<preference name="CONTRACT_ID" />
+			<preference name="P12_STORE" dafault="NAN"/>
+
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosDigiMe">
+					<param name="android-package" value="com.onymos.components.digime.DigimeManager"/>
+				</feature>
+			</config-file>
+
+			<config-file target="AndroidManifest.xml" parent="/manifest/application">
+				<meta-data
+					android:name="com.onymos.components.digime.APP_ID"
+					android:value="$APP_ID" />
+				<meta-data
+					android:name="com.onymos.components.digime.CONTRACT_ID"
+					android:value="$CONTRACT_ID" />
+				<meta-data
+					android:name="com.onymos.components.digime.P12_STORE"
+					android:value="$P12_STORE" />
+			</config-file>
+
+			<source-file	src="src/android/DigimeManager.java"
+										target-dir="src/com/onymos/components/digime" />
+			<source-file	src="src/android/com/digi/me/permission/app/Application.java"
+										target-dir="src/com/digi/me/permission/app" />
+			<source-file	src="src/android/com/digi/me/permission/service/models/DataGetResponse.java"
+										target-dir="src/com/digi/me/permission/service/models" />
+			<source-file	src="src/android/com/digi/me/permission/service/models/DataGetEncryptedResponse.java"
+										target-dir="src/com/digi/me/permission/service/models" />										
+			<source-file	src="src/android/com/digi/me/permission/service/models/File.java"
+										target-dir="src/com/digi/me/permission/service/models" />
+			<source-file	src="src/android/com/digi/me/permission/service/models/RequestDataBody.java"
+										target-dir="src/com/digi/me/permission/service/models" />		
+			<source-file	src="src/android/com/digi/me/permission/service/models/SessionKeyCreateResponse.java"
+										target-dir="src/com/digi/me/permission/service/models" />
+			<source-file	src="src/android/com/digi/me/permission/service/models/SessionTokenBody.java"
+										target-dir="src/com/digi/me/permission/service" />										
+			<source-file	src="src/android/com/digi/me/permission/service/GetSessionTokenTask.java"
+										target-dir="src/com/digi/me/permission/service" />		
+			<source-file	src="src/android/com/digi/me/permission/service/GetUserDataTask.java"
+										target-dir="src/com/digi/me/permission/service" />	
+			<source-file	src="src/android/com/digi/me/permission/service/PermissionService.java"
+										target-dir="src/com/digi/me/permission/service" />
+
+			<resource-file src="src/android/assets/digime2y.p12" target="assets" />
+			<resource-file src="src/android/assets/digime3m.p12" target="assets" />
+
+			<hook src="scripts/copyFiles.js" type="after_build"/>
+
+		</platform>
+
+</plugin>

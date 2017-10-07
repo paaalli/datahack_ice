@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/contacts"
+		id="onymos-plugin-contacts"
+		version="1.0.8">
+
+		<name>OnymosContactsComponent</name>
+		<description>Onymos Component - Contacts</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid, Contacts, AddressBook, PhoneBook</keywords>
+
+		<js-module src="www/OnymosComponentInitialize.min.js" name="OnymosComponentInitialize">
+			<clobbers target="Contacts.OnymosComponentInitialize" />
+		</js-module>
+
+		<js-module src="www/OnymosContacts.min.js" name="OnymosContacts">   
+			<clobbers target="OnymosContacts" />
+		</js-module>
+
+		<js-module src="www/OnymosContactsConstants.min.js" name="OnymosContactsConstants">   
+			<clobbers target="OnymosContactsConstants" />
+		</js-module>
+
+		<js-module src="www/OnymosContactsMultiRecords.min.js" name="OnymosContactsMultiRecords">
+			<clobbers target="OnymosContactsMultiRecords" />
+		</js-module>
+
+		<js-module src="www/OnymosContactsUniRecord.min.js" name="OnymosContactsUniRecord">
+			<clobbers target="OnymosContactsUniRecord" />
+		</js-module>
+
+		<js-module src="www/OnymosContactsErrorCodes.min.js" name="OnymosContactsError">
+			<clobbers target="OnymosContactsError" />
+		</js-module>
+
+		<js-module src="www/OnymosContactsSearchOptions.min.js" name="OnymosContactsSearchOptions">
+			<clobbers target="OnymosContactsSearchOptions" />
+		</js-module>
+
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+		
+		<!-- android -->
+		<platform name="android">
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosContacts">
+					<param name="android-package" value="com.onymos.components.contacts.OnymosContactsManager"/>
+				</feature>
+			</config-file>
+
+			<config-file target="AndroidManifest.xml" parent="/*">
+				<uses-permission android:name="android.permission.READ_CONTACTS" />
+				<uses-permission android:name="android.permission.WRITE_CONTACTS" />
+				<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+			</config-file>
+
+			<source-file	src="src/android/OnymosContactsAccessor.java"
+										target-dir="src/com/onymos/components/contacts" />
+			<source-file	src="src/android/OnymosContactsAccessorSDK5.java"
+										target-dir="src/com/onymos/components/contacts" />
+			<source-file	src="src/android/OnymosContactsManager.java"
+										target-dir="src/com/onymos/components/contacts" />
+			<source-file	src="src/android/OnymosContactsInfoDTO.java"
+										target-dir="src/com/onymos/components/contacts" />
+			<source-file	src="src/android/OnymosPermissionHelper.java"
+										target-dir="src/com/onymos/components/contacts" />
+		</platform>
+
+		<!-- ios -->
+		<platform name="ios">
+			<config-file target="config.xml" parent="/*">
+				<feature name="OnymosContacts">
+					<param name="ios-package" value="OnymosContacts"/>
+				</feature>
+			</config-file>
+
+			<preference name="CONTACTS_USAGE_DESCRIPTION" default="Access Contacts" />
+				<config-file target="*-Info.plist" parent="NSContactsUsageDescription">
+					<string>$CONTACTS_USAGE_DESCRIPTION</string>
+				</config-file>
+
+			<js-module src="www/ios/OnymosContactsMultiRecords.min.js"
+								 name="OnymosContactsMultiRecords-iOS">
+				<merges target="OnymosContactsMultiRecords" />
+			</js-module>
+
+			<js-module src="www/ios/OnymosContactsUniRecord.min.js"
+								 name="OnymosContactsUniRecord-iOS">
+				<merges target="OnymosContactsUniRecord" />
+			</js-module>
+
+			<header-file src="src/ios/OnymosContacts.h" />
+			<source-file src="src/ios/OnymosContacts.m" />
+			<header-file src="src/ios/OnymosContact.h" />
+			<source-file src="src/ios/OnymosContact.m" />
+
+			<framework src="AddressBook.framework" weak="true" />
+			<framework src="AddressBookUI.framework" weak="true" />
+			<framework src="CoreGraphics.framework" />
+		</platform>
+
+</plugin>

@@ -1,0 +1,67 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button menuToggle>
+				<ion-icon name="menu"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Onymos DigiMe Tutorial</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<div	class="error-banner" 
+				[ngClass]="{'error-banner-show' : errorMessage !== ''}">
+		{{errorMessage}}
+	</div>
+
+	<ion-card>
+		<ion-card-header>
+			<h1>Request File Details</h1>
+		</ion-card-header>
+		<ion-card-content>
+			<h2>
+				<B>OnymosDigiMe.getDetails</B>
+			</h2>
+			Retrieve Details of a particular file.
+			<BR>
+
+			<!--
+			<p>
+				&nbsp;&nbsp;&nbsp;
+				<span (click)="toggleGetDetailsSpecDisplay();" class="expand-link">
+					<span *ngIf="!displayGetDetailsSpec">Show API Details</span>
+					<span *ngIf="displayGetDetailsSpec">Hide API Details</span>
+				</span>
+			</p>
+			<p *ngIf="displayGetDetailSpec">
+				I am visible!
+			</p>
+			-->
+
+			<button ion-button block (click)="getFileDetails(fileName);">
+				Get Details
+			</button>
+
+		</ion-card-content>
+	</ion-card>
+
+	&nbsp;&nbsp;&nbsp;<B>File:</B> &nbsp;{{fileName}}
+
+	<div *ngIf="getDetailsQueryInProgress">
+		&nbsp;&nbsp;
+		<ion-spinner name="bubbles"></ion-spinner>
+		&nbsp;&nbsp;
+		<B>Retrieving File Details...</B>
+	</div>
+
+	<div class="filedetails-table">
+		<span [innerHtml]="fileData"></span>
+	</div>
+
+	<h4 *ngIf="fileData.length === 0 && getDetailsQueryComplete">
+		&nbsp;&nbsp;No File Details.
+	</h4>
+
+</ion-content>

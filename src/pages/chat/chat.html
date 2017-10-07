@@ -1,0 +1,26 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button menuToggle>
+				<ion-icon name="menu"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Chats</ion-title>
+		<ion-buttons end>
+			<button ion-button (click)="compose();">
+				<ion-icon ios="ios-create-outline" md="md-create" item-right></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-list>
+		<ion-item *ngFor="let chat of chatList"
+						(click)="viewChatDetails(chat.sender, chat.recipients);">
+			<h2>{{chat.chatParticipants}}</h2>
+			<p>{{chat.messageContent}}</p>
+			<ion-note item-right>{{chat.messageCreated}}</ion-note>
+		</ion-item>
+	</ion-list>
+</ion-content>

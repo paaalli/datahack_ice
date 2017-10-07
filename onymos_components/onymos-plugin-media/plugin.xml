@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/media"
+		id="onymos-plugin-media"
+		version="1.0.8">
+
+		<name>OnymosMediaComponent</name>
+		<description>Onymos Component - Media</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid, Media, Camera, Photo, Video</keywords>
+
+		<js-module src="www/OnymosComponentInitialize.min.js" name="OnymosComponentInitialize">
+			<clobbers target="Media.OnymosComponentInitialize" />
+		</js-module>
+
+		<js-module src="www/OnymosMedia.min.js" name="OnymosMedia">
+			<clobbers target="OnymosMedia" />
+		</js-module>
+
+		<js-module src="www/OnymosMediaConstants.min.js" name="OnymosMediaConstants">   
+			<clobbers target="OnymosMediaConstants" />
+		</js-module>
+
+		<js-module src="www/OnymosMediaDefinitions.min.js" name="OnymosMediaDefinitions">
+			<clobbers target="OnymosMediaDefinitions" />
+		</js-module>
+		
+		<js-module src="www/OnymosMediaFile.min.js" name="OnymosMediaFile">
+			<clobbers target="OnymosMediaFile" />
+		</js-module>
+
+		<js-module src="www/OnymosCaptureError.min.js" name="OnymosCaptureError">
+				<clobbers target="OnymosCaptureError" />
+		</js-module>
+
+		<dependency id="cordova-plugin-file"
+								url="https://github.com/apache/cordova-plugin-file.git"/>
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+
+		<dependency id="cordova-plugin-file-transfer"
+								url="https://github.com/apache/cordova-plugin-file-transfer"/>
+
+		<!-- android -->
+		<platform name="android">
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosMedia">
+					<param name="android-package" value="com.onymos.components.media.OnymosMedia"/>
+				</feature>
+			</config-file>
+
+			<config-file target="AndroidManifest.xml" parent="/*">
+				<uses-permission android:name="android.permission.RECORD_VIDEO"/>
+				<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+				<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			</config-file>
+			
+			<edit-config file="AndroidManifest.xml" target="/manifest/uses-sdk" mode="merge">
+				<uses-sdk android:minSdkVersion="18" />
+			</edit-config>
+						
+			<source-file src="src/android/OnymosMedia.java"
+										target-dir="src/com/onymos/components/media" />
+			<source-file src="src/android/OnymosMediaUtil.java"
+										target-dir="src/com/onymos/components/media" />
+			<source-file src="src/android/OnymosPermissionHelper.java"
+										target-dir="src/com/onymos/components/media" />
+			<source-file src="src/android/OnymosPendingRequests.java"
+										target-dir="src/com/onymos/components/media" />
+			<source-file src="src/android/CustomAndroidFormatStrategy.java"
+										target-dir="src/com/onymos/components/media" />
+			<source-file src="src/android/Base64.java"
+										target-dir="src/com/onymos/components/media" />
+
+			<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+
+		</platform>
+
+		<!-- ios -->
+		<platform name="ios">
+			<config-file target="config.xml" parent="/*">
+				<feature name="OnymosMedia">
+					<param name="ios-package" value="CDVCamera" />
+				</feature>
+				<preference name="CameraUsesGeolocation" value="false" />
+			</config-file>
+
+			<preference name="AUDIO_USAGE_DESCRIPTION" default="Access Audio" />
+				<config-file target="*-Info.plist" parent="NSAppleMusicUsageDescription">
+					<string>$AUDIO_USAGE_DESCRIPTION</string>
+				</config-file>
+
+			<preference name="CAMERA_USAGE_DESCRIPTION" default="Access Camera" />
+				<config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+					<string>$CAMERA_USAGE_DESCRIPTION</string>
+				</config-file>
+
+			<preference name="PHOTOLIBRARY_USAGE_DESCRIPTION" default="Access PhotoLibrary" />
+				<config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+					<string>$PHOTOLIBRARY_USAGE_DESCRIPTION</string>
+				</config-file>
+
+			<preference name="MICROPHONE_USAGE_DESCRIPTION" default="Access Microphone" />
+				<config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+						<string>$MICROPHONE_USAGE_DESCRIPTION</string>
+				</config-file>
+
+			<header-file src="src/ios/UIImage+CropScaleOrientation.h" />
+			<source-file src="src/ios/UIImage+CropScaleOrientation.m" />
+			<header-file src="src/ios/CDVCamera.h" />
+			<source-file src="src/ios/CDVCamera.m" />
+			<header-file src="src/ios/CDVJpegHeaderWriter.h" />
+			<source-file src="src/ios/CDVJpegHeaderWriter.m" />
+			<header-file src="src/ios/CDVExif.h" />
+			<resource-file src="src/ios/CDVCamera.bundle" />
+			<framework src="MediaPlayer.framework" />
+			<framework src="ImageIO.framework" weak="true" />
+			<framework src="CoreLocation.framework" />
+			<framework src="CoreGraphics.framework" />
+			<framework src="AssetsLibrary.framework" />
+			<framework src="MobileCoreServices.framework" />
+			<framework src="CoreGraphics.framework" />
+			<framework src="AVFoundation.framework" />
+			<framework src="CoreVideo.framework" />
+			<framework src="CoreMedia.framework" />
+			 
+			<config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+				<string></string>
+			</config-file>
+		</platform>
+
+</plugin>

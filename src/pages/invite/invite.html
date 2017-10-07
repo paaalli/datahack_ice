@@ -1,0 +1,39 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button menuToggle>
+				<ion-icon name="menu"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Invite</ion-title>
+	</ion-navbar>
+	<ion-searchbar (ionInput)="updateContactsList($event)"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+
+	<ion-item *ngIf="contacts.length <=0 && !loadingContacts">No Contacts found</ion-item>
+
+	<ion-list>
+		<ion-item *ngFor="let contact of contacts" (click)="messageInvitee(contact)">
+			<ion-avatar item-left>
+				<img	*ngIf="contact.photos && contact.photos[0] &&
+										contact.photos[0].value && contact.photos[0].value !== ''"
+					[src]="contact.photos[0].value" />
+				<img	*ngIf="!contact.photos || !contact.photos[0] || !contact.photos[0].value || contact.photos[0].value === ''"
+					src="assets/icon/Icon-NoPhoto.png" />
+			</ion-avatar>
+			<h2 [ngClass]="{'disabled' : (!contact.phoneNumbers && !contact.emails)}">
+				<B>{{contact.name.givenName}}</B> {{contact.name.familyName}}
+			</h2>
+			<p *ngIf="!contact.phoneNumbers && !contact.emails">No phone or email</p>
+		</ion-item>
+	</ion-list>
+
+	<ion-item *ngIf="loadingContacts">Loading Contacts...</ion-item>
+
+	<ion-infinite-scroll (ionInfinite)="loadMoreContacts($event)">
+		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/contacts"
+		id="onymos-plugin-util"
+		version="1.0.2">
+
+		<name>OnymosUtilComponent</name>
+		<description>Onymos Component - Util</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid</keywords>
+
+		<js-module src="www/OnymosComponentInitialize.min.js" name="OnymosComponentInitialize">
+			<clobbers target="Util.OnymosComponentInitialize" />
+		</js-module>
+
+		<js-module src="www/OnymosUtil.min.js" name="OnymosUtil">
+			<clobbers target="OnymosUtil" />
+		</js-module>
+
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+		
+		<!-- android -->
+		<platform name="android">
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosUtil">
+					<param name="android-package" value="com.onymos.components.util.OnymosUtilManager"/>
+				</feature>
+			</config-file>
+
+			<config-file target="AndroidManifest.xml" parent="/*">
+				<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			</config-file>
+
+			<source-file	src="src/android/OnymosUtilManager.java"
+										target-dir="src/com/onymos/components/util" />
+			<source-file	src="src/android/OnymosPermissionHelper.java"
+										target-dir="src/com/onymos/components/util" />
+										
+		</platform>
+
+		<!-- ios -->
+		<platform name="ios">
+			<config-file target="config.xml" parent="/*">
+				<feature name="OnymosUtil">
+					<param name="ios-package" value="OnymosUtilManager"/>
+				</feature>
+			</config-file>
+
+			<header-file src="src/ios/OnymosUtilManager.h"/>
+			<source-file src="src/ios/OnymosUtilManager.m"/>
+
+			<hook type="after_plugin_install" src="hooks/ios/prerequisites.js"/>
+			<hook type="after_plugin_install" src="hooks/ios/install_entitlements.js"/>
+		</platform>
+
+</plugin>

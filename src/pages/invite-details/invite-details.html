@@ -1,0 +1,51 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button menuToggle>
+				<ion-icon name="menu"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Invite {{invitee.name.givenName}}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+		<ion-card-header>
+			<ion-item>
+				<ion-avatar item-left>
+					<img	*ngIf="invitee.photos && invitee.photos[0] &&
+											invitee.photos[0].value && invitee.photos[0].value !== ''"
+							[src]="invitee.photos[0].value" />
+
+				<img	*ngIf="!invitee.photos || !invitee.photos[0] ||
+											!invitee.photos[0].value || invitee.photos[0].value === ''"
+							src="assets/icon/Icon-NoPhoto.png" />
+				</ion-avatar>
+				<h2>{{invitee.name.givenName}}</h2>
+			</ion-item>
+		</ion-card-header>
+
+		<ion-item>
+			<ion-card-title *ngIf="invitee.phoneNumbers">
+				Invite by SMS:
+			</ion-card-title>
+			<p *ngFor="let phone of invitee.phoneNumbers">
+				<a [href]="getSMSHrefForPhoneNumber(phone.value)" style="text-decoration: none;">
+					{{phone.value}}
+				</a>
+			</p>
+
+			<ion-card-title *ngIf="invitee.emails">
+				Invite by Email:
+			</ion-card-title>
+			<p *ngFor="let email of invitee.emails">
+				<a [href]="getEmailHrefForEmail(email.value)" style="text-decoration: none;">
+					{{email.value}}
+				</a>
+			</p>
+		</ion-item>
+
+	</ion-card>
+
+</ion-content>

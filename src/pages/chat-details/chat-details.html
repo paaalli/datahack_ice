@@ -1,0 +1,197 @@
+<ion-header class="chat-header">
+
+	<ion-navbar class="chat-navbar">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{chatDetailsPageTitle}}</ion-title>
+	</ion-navbar>
+
+	<ion-toolbar class="chat-subheader">
+
+		<!-- Display Pick Recipient section, if on New Chat page -->
+		<div *ngIf="displayDetails === 'NEW_CHAT' && errorMessage === ''">
+
+			<div	class="pick-recipient-section"
+						(click)="focusPickRecipientInput();"
+						onscroll="document.getElementById('id_pick-recipient-input').blur();">
+				To:&nbsp;
+
+				<span class="picked-recipient" *ngFor="let recipient of recipients; let j = index" [attr.data-index]="j">
+					{{recipient.userName}}
+					<span class="cancel-picked-recipient"
+								(click)="deleteRecipient(j);">
+						<ion-icon item-left color="dark"
+							name="close-circle">
+						</ion-icon>
+					</span>
+				</span>
+
+				<input	type="text"
+								class="pick-recipient-input" id="id_pick-recipient-input"
+								[(ngModel)]="searchUserString"
+								[ngModelOptions]="{ debounce: 600 }"
+								(ngModelChange)="searchUsers($event);"
+								[disabled]="errorMessage !== ''"
+								oninput="this.style.width = ((this.value.length + 1) * 11) + 'px';"
+								onpropertychange="this.style.width = ((this.value.length + 1) * 11) + 'px';"/>
+
+			</div> <!-- class="pick-recipient-section" id="id_pick-recipient-section" -->
+
+		</div> <!-- end div ng-if="displayDetails === 'NEW_CHAT' && errorMessage === ''" -->
+		<!-- end Display Recipient Select section, if on New Chat page -->
+
+		<!-- Display Selected Recipients section, if on Existing Chat page -->
+		<div *ngIf="displayDetails === 'EXISTING_CHAT' && errorMessage === ''">
+			<div class="selected-recipients">
+				To: {{getFormattedRecipientsList()}}
+			</div>
+		</div> <!-- end div *ngIf="displayDetails === 'EXISTING_CHAT' && errorMessage === ''" -->
+
+		<div	class="error-banner" 
+					[ngClass]="{'error-banner-show' : errorMessage !== ''}">
+			{{errorMessage}}
+		</div>
+	</ion-toolbar>
+
+</ion-header>
+
+<ion-content (click)="disableCopy();">
+
+	<!-- NEW_CHAT Search Users -->
+	<div *ngIf="emptySearchUserResults && !recipientListReady">
+		<span class="empty-search-results">No results found.</span> 
+	</div>
+
+	<div *ngIf="!recipientListReady">
+		<ion-list>
+			<ion-item *ngFor="let user of searchUserResults; let i = index" [attr.data-index]="i"
+					(click)="addRecipient(i)">
+				<ion-avatar item-left>
+					<img	*ngIf="user.userPhoto !== ''"
+						[src]="user.userPhoto" />
+					<img	*ngIf="!user.userPhoto || user.userPhoto === ''"
+						src="assets/icon/Icon-NoPhoto.png" />
+				</ion-avatar>
+				<h2>{{user.userName}}</h2>
+			</ion-item>
+		</ion-list>
+	</div> <!-- end div *ngIf="!recipientListReady" -->
+	<!-- end NEW_CHAT Search Users -->
+
+	<div *ngIf="recipientListReady">
+
+		<ion-refresher (ionRefresh)="loadMoreMessages($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+
+		<!-- Posted Messages -->
+		<div *ngFor="let message of sortMessagesList(messagesList)">
+			<div	class="bubble" 
+						[ngClass]="{'bubble-send' : message.sender.userId === sender.userId}">
+
+				<p	class="message-sender"
+						*ngIf="message.sender.userId !== sender.userId">
+					<B>{{message.sender.userName}}</B>
+				</p>
+
+				<div *ngIf="message.mediaUrl && message.mediaUrl !== ''">
+					<img	class="message-media" [src]="message.thumbnailUrl" 
+								(click)="launchMedia(message.sender, message.mediaUrl, message.mediaType);" />
+				</div>
+
+				<div	*ngIf="message.messageContent !== '' && message.enabledCopy === true"
+							class="message-copy"
+							(click)="copyContent(message); $event.stopPropagation();">
+					<div class="message-copy-button">Copy</div>
+				</div>
+
+				<h6 class="message-content" *ngIf="message.messageContent !== ''"
+						(click)="enableCopy(message); $event.stopPropagation();">
+					{{message.messageContent}}
+				</h6>
+
+				<p small class="message-time">{{message.formattedDate}}</p>
+
+			</div> <!-- end div class="bubble" -->
+		</div>
+		<!-- end Posted Messages -->
+
+		<!-- Currently Uploading Messages -->
+		<div	*ngIf="numberOfInProgressUploads() > 0">
+			<div	class="bubble bubble-send" *ngFor="let key of inProgressUploadKeys">
+
+				<div class="clear-failed-upload" *ngIf="inProgressUploads[key].uploadError"
+							(click)="clearFailedUpload(inProgressUploads[key].callId);">
+					<ion-icon item-left color="danger"
+						name="close-circle">
+					</ion-icon>
+					Send failure!
+				</div>
+
+				<img class="message-media" src="{{inProgressUploads[key].mediaUrl}}" />
+
+				<progress class="message-upload-progress"
+									value="{{inProgressUploads[key].uploadProgress}}" max="100"
+									*ngIf="inProgressUploads[key].uploadProgress > 0 && inProgressUploads[key].uploadProgress < 100">
+				</progress>
+				<p small
+						*ngIf="inProgressUploads[key].uploadProgress === -1 && !inProgressUploads[key].uploadError">
+					Preparing Upload
+				</p>
+				<p small
+						*ngIf="inProgressUploads[key].uploadProgress > 0 &&
+										inProgressUploads[key].uploadProgress < 100 &&
+										!inProgressUploads[key].uploadError">
+					{{inProgressUploads[key].uploadProgress}} %
+				</p>
+
+				<h6 class="message-content" *ngIf="inProgressUploads[key].messageContent !== ''">
+					{{inProgressUploads[key].messageContent}}
+				</h6>
+
+			</div>
+		</div>
+		<!-- end Currently Uploading Messages -->
+
+	</div>
+
+</ion-content>
+
+<ion-footer class="chat-send-area">
+	<ion-grid>
+
+		<ion-row *ngIf="loadingSelectedMedia">
+			<img	src="assets/media/loading.png" alt="Loading ..." />
+		</ion-row>
+		<ion-row *ngIf="selectedMediaUrl !== ''">
+			<img	[hidden]="loadingSelectedMedia" (load)="onSelectedMediaLoad();"
+						[src]="selectedMediaUrl" class="chat-message-selected-media" />
+			<ion-icon
+				name="close-circle"
+				class="chat-message-cancel-image"
+				(click)="cancelSelectedMedia();">
+			</ion-icon>
+		</ion-row>
+
+		<ion-row>
+			<ion-icon
+				name="camera" item-left
+				class="chat-icon-camera"
+				*ngIf="selectedMediaUrl === '' && !loadingSelectedMedia"
+				(click)="selectMedia();">
+			</ion-icon>
+
+			<ion-textarea auto-resize
+				class="chat-message-textarea"
+				placeholder="Enter your message here..."
+				[(ngModel)]="messageContent">
+			</ion-textarea>
+
+			<button ion-button class="chat-send-button" (click)="sendMessage();">
+				Send
+			</button>
+		</ion-row>
+
+	</ion-grid>
+</ion-footer>

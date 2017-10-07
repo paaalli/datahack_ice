@@ -1,0 +1,38 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Login</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<ion-card>
+
+		<ion-card-header>
+			Login with
+		</ion-card-header>
+
+		<ion-list>
+
+			<button ion-item (click)="socialLogin('facebook');">
+				<ion-icon name="logo-facebook" class="login-social-icon facebook" item-left></ion-icon>
+				<h3 class="login-social-name">Facebook</h3>
+			</button>
+
+			<button ion-item (click)="socialLogin('google');">
+				<ion-icon name="logo-google" class="login-social-icon google" item-left></ion-icon>
+				<h3 class="login-social-name">Google</h3>
+			</button>
+
+			<button ion-item (click)="socialLogin('twitter');">
+				<ion-icon name="logo-twitter" class="login-social-icon twitter" item-left></ion-icon>
+				<h3 class="login-social-name">Twitter</h3>
+			</button>
+
+		</ion-list>
+
+	</ion-card>
+</ion-content>

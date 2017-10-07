@@ -1,0 +1,94 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button menuToggle>
+				<ion-icon name="menu"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Onymos DigiMe Tutorial</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<div	class="error-banner" 
+				[ngClass]="{'error-banner-show' : errorMessage !== ''}">
+		{{errorMessage}}
+	</div>
+
+	<ion-card>
+		<ion-card-header>
+			<h1>Request Data List</h1>
+		</ion-card-header>
+		<ion-card-content>
+			<h2>
+				<B>OnymosDigiMe.getList</B>
+			</h2>
+			Request your app user for <B>Consent</B> to <B>Access</B> their Data list.
+			<BR>
+
+			<!--
+			<p>
+				&nbsp;&nbsp;&nbsp;
+				<span (click)="toggleGetListSpecDisplay();" class="expand-link">
+					<span *ngIf="!displayGetListSpec">Show API Details</span>
+					<span *ngIf="displayGetListSpec">Hide API Details</span>
+				</span>
+			</p>
+			<p *ngIf="displayGetListSpec">
+				I am visible!
+			</p>
+			-->
+
+			<ion-row>
+				<ion-col col-33>
+					<button ion-button block (click)="requestConsentAccess('social');">
+						Social
+					</button>
+				</ion-col>
+
+				<ion-col col-33>
+					<button ion-button block (click)="requestConsentAccess('health');">
+						Health
+					</button>
+				</ion-col>
+
+				<ion-col col-33>
+					<button ion-button block (click)="requestConsentAccess('financial');">
+						Financial
+					</button>
+				</ion-col>
+			</ion-row>
+
+		</ion-card-content>
+	</ion-card>
+
+	<div *ngIf="getListQueryInProgress">
+		&nbsp;&nbsp;
+		<ion-spinner name="bubbles"></ion-spinner>
+		&nbsp;&nbsp;
+		<B>Retrieving Data List...</B>
+	</div>
+
+	<ion-list inset *ngIf="fileNameArray.length > 0">
+		<ion-item *ngFor="let fileName of fileNameArray" (click)="getFileDetails(fileName);">
+				<ion-icon name="card" class="datalist-icon-color" item-start
+									*ngIf="selectedServiceGroup === 'financial'"></ion-icon>
+				<ion-icon name="medkit" class="datalist-icon-color" item-start
+									*ngIf="selectedServiceGroup === 'health'"></ion-icon>
+				<ion-icon name="person" class="datalist-icon-color" item-start
+									*ngIf="selectedServiceGroup === 'social'"></ion-icon>
+				<span class="datalist-date">
+					{{getFileMetaData(fileName)}}
+				</span>
+				<p>
+					{{fileName}}
+				</p>
+		</ion-item>
+	</ion-list>
+
+	<h4 *ngIf="fileNameArray.length === 0 && getListQueryComplete">
+		&nbsp;&nbsp;No Data List found.
+	</h4>
+
+</ion-content>

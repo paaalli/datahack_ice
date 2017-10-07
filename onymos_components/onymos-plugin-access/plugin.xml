@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="https://www.onymos.com/products/access"
+		id="onymos-plugin-access"
+		version="1.0.7">
+
+		<name>OnymosAccessComponent</name>
+		<description>Onymos Component - Access</description>
+		<license>Onymos Inc</license>
+		<keywords>Onymos, Hybrid, Access, User, Risk, Rules</keywords>
+
+		<js-module src="www/OnymosComponentInitialize.min.js" name="OnymosComponentInitialize">
+			<clobbers target="Access.OnymosComponentInitialize" />
+		</js-module>
+
+		<js-module src="www/OnymosAccess.min.js" name="OnymosAccess">
+			<clobbers target="OnymosAccess" />
+		</js-module>
+
+		<js-module src="www/OnymosAuth.min.js" name="OAuth">
+			<clobbers target="OAuth" />
+		</js-module>
+
+		<js-module src="www/OnymosFacebookConnector.min.js" name="OnymosFacebookConnector">
+			<clobbers target="OnymosFacebookConnector" />
+		</js-module>
+
+		<js-module src="www/OnymosGoogleConnector.min.js" name="OnymosGoogleConnector">
+			<clobbers target="OnymosGoogleConnector" />
+		</js-module>
+
+		<js-module src="www/OnymosTwitterConnector.min.js" name="OnymosTwitterConnector">
+			<clobbers target="OnymosTwitterConnector" />
+		</js-module>
+
+		<dependency id="cordova-plugin-inappbrowser"
+								url="https://github.com/apache/cordova-plugin-inappbrowser.git"/>
+		<dependency id="cordova-plugin-device"
+								url="https://github.com/apache/cordova-plugin-device"/>
+
+		<!-- android -->
+		<platform name="android">
+			<framework src="com.google.android.gms:play-services-auth:9.8.0" />
+			<framework src="com.google.android.gms:play-services-identity:9.8.0" />
+
+			<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="OnymosAccess">
+						<param name="android-package" value="com.onymos.components.access.OnymosAccessManager"/>
+				</feature>
+				<access origin="https://accounts.google.com/*" />
+			</config-file>
+
+			<config-file target="AndroidManifest.xml" parent="/manifest">
+				<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+				<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+			</config-file>
+
+			<source-file	src="src/android/OnymosAccessManager.java"
+										target-dir="src/com/onymos/components/access" />
+		</platform>
+
+		<!-- ios -->
+		<platform name="ios">
+			<config-file target="config.xml" parent="/*">
+				<feature name="OnymosAccess">
+					<param name="ios-package" value="OnymosAccessManager" />
+					<param name="onload" value="true" />
+				</feature>
+				<access origin="https://accounts.google.com/*" />
+			</config-file>
+
+			<header-file src="src/ios/OnymosAccessManager.h"/>
+			<source-file src="src/ios/OnymosAccessManager.m" />
+
+			<preference name="IOS_URL_SCHEME" />
+
+			<config-file target="*-Info.plist" parent="CFBundleURLTypes">
+				<array>
+					<dict>
+							<key>CFBundleTypeRole</key>
+							<string>Editor</string>
+							<key>CFBundleURLName</key>
+							<string>IOS_URL_SCHEME</string>
+							<key>CFBundleURLSchemes</key>
+							<array>
+									<string>$IOS_URL_SCHEME</string>
+							</array>
+					</dict>
+				</array>
+			</config-file>
+
+			<resource-file src="src/ios/libs/GoogleSignIn.bundle" />
+			<framework src="GoogleSignIn" type="podspec" spec="~> 4.0"/>
+
+			<framework src="AddressBook.framework" weak="true" />
+			<framework src="CoreText.framework" weak="true" />
+			<framework src="SafariServices.framework" weak="true" />
+			<framework src="Security.framework" weak="true" />
+			<framework src="SystemConfiguration.framework" weak="true" />
+			<framework src="libz.tbd" weak="true" />
+			<framework src="libz.dylib" weak="true" />
+
+			<hook type="after_plugin_install" src="hooks/ios/initialize.js" />
+			<hook type="after_plugin_install" src="hooks/ios/keychainSharingEntitlement.js" />
+
+		</platform>
+		
+</plugin>

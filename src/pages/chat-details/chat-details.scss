@@ -1,0 +1,311 @@
+	$chatReceivedBubbleColor				: color($colors, light);
+	$chatSentBubbleColor						: lighten(color($colors, primary), 40%);
+
+	.chat-header, .chat-navbar, .chat-subheader {
+		margin:										0;
+		padding:									0;
+
+	} /* end chat-header, .chat-navbar, .chat-subheader */
+
+	/* ------ NEW_CHAT Styles ------ */
+	.pick-recipient-section {
+		background-color:				color($colors, light);
+		border-bottom:					1px solid color($colors, medium);;
+
+		padding:								10px;
+
+		width:									100%;
+		min-width:							100%;
+		height:									auto;
+		max-height:							60px;
+
+		position:								absolute;
+		top:										0;
+		overflow:								scroll;
+
+		z-index:								1;
+
+	} /* end pick-recipient-section */
+
+	.picked-recipient {
+		background-color:				color($colors, light);
+
+		border:									1px solid color($colors, medium);
+		border-radius:					6px;
+		display:								inline-block;
+
+		margin:									3px 10px 3px 0;
+		padding:								3px 6px 3px 6px;
+
+		.cancel-picked-recipient {
+			float:								right;
+
+			width:								16px;
+			height:								16px;
+
+			margin:								0 0 0 6px;
+
+		} /* end cancel-picked-recipient */
+
+	} /* end picked-recipient */
+
+	.pick-recipient-input {
+		background-color:				color($colors, light);
+		border:									0;
+		display:								inline-block;
+
+		margin:									0;
+		padding:								0;
+
+		min-width:							120px;
+		max-width:							-webkit-calc(100% - 60px);
+		max-width:							-moz-calc(100% - 60px);
+		max-width:							calc(100% - 60px);
+
+		-webkit-box-sizing:			border-box;
+		-moz-box-sizing:				border-box;
+		box-sizing:							border-box;
+
+		overflow:								scroll;
+
+	} /* end pick-recipient-input */
+	/* ------ end NEW_CHAT Styles ------ */
+
+	/* ------ EXISTING_CHAT Styles ------ */
+	.selected-recipients {
+		background-color:					color($colors, light) !important;
+		position:									absolute;
+
+		top:											0;
+		overflow-x:								hidden;
+		overflow-y:								scroll;
+
+		margin:										0;
+		padding:									10px;
+		width:										100%;
+		height:										100%;
+
+		z-index:									1;
+
+	} /* end selected-recipients */
+	/* ------ end EXISTING_CHAT Styles ------ */
+
+	.message-copy {
+		position:									relative;
+
+	} /* end message-copy */
+
+	.message-copy-button {
+		position:									absolute;
+		bottom:										0;
+
+		background-color:					color($colors, dark);;
+		border-radius:						6px;
+
+		color:										white;
+
+		margin:										0;
+		padding:									6px;
+
+		z-index:									1;
+
+	} /* end message-copy-button */
+
+	.bubble {
+		color:										color($colors, dark);
+		background-color:					$chatReceivedBubbleColor;
+
+		border-radius:						10px;
+
+		box-shadow:								inset 0 5px 5px rgba($chatReceivedBubbleColor, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+
+		box-sizing:								border-box;
+		clear:										both;
+		float:										left;
+		
+		margin:										10px 0 10px 20px;
+		padding:									8px 3px 8px 3px;
+		position:									relative;
+		text-shadow:							0 1px 1px rgba($chatReceivedBubbleColor, 0.7);
+		width:										auto;
+		max-width:								80%;
+		word-wrap:								break-word;
+
+		-webkit-transform:				translate3d(0, 0, 0);
+
+	} /* end bubble */
+
+	.bubble:before, .bubble:after {
+		border-radius:						10px / 5px;
+		content:									'';
+		display:									block;
+		position:									absolute;
+
+	} /* end bubble:before, bubble:after */
+
+	.bubble:before {
+		border:										10px solid transparent;
+		border-bottom-color:			$chatReceivedBubbleColor;
+		bottom:										0;
+		left:											-7px;
+		z-index:									-2;
+
+	} /* end bubble:before */
+
+	.bubble:after {
+		border:										8px solid transparent;
+		border-bottom-color:			$chatReceivedBubbleColor;
+		bottom:										1px;
+		left:											-5px;
+
+	} /* end bubble:after */
+
+	.bubble-send {
+		background-color:					$chatSentBubbleColor;
+		float:										right;
+		margin:										10px 20px 10px 0px;
+
+		-webkit-transform:				translate3d(0, 0, 0);
+
+	} /* end bubble-send */
+
+	.bubble-send:before {
+		border-bottom-color:			$chatSentBubbleColor;
+		border-radius:						10px / 5px;
+		left:											auto;
+		right:										-7px;
+
+	} /* end bubble-send:before */
+
+	.bubble-send:after {
+		border-bottom-color:			$chatSentBubbleColor;
+		border-radius:						10px / 5px;
+		left:											auto;
+		right:										-5px;
+
+	} /* end bubble-send:after */
+
+	.message-sender, .message-content, .message-time {
+		padding:									0 10px 0 10px;
+
+	} /* end message-sender, .message-content, .message-time */
+
+	.message-media {
+		border-radius:						10px;
+		display:									block;
+
+		margin-left:							auto;
+		margin-left:							auto;
+		padding:									0;
+
+		width:										auto;
+		max-width:								100%;
+		min-height:								200px;
+		height:										auto;
+		max-height:								200px;
+
+	} /* end message-media */
+
+	.message-upload-progress {
+		width:										100%;
+
+		z-index:									2;
+
+	} /* end message-upload-progress */
+
+	.chat-send-area {
+		background-color:					color($colors, light);
+
+		border-top:								1px solid color($colors, medium);
+		box-shadow:								0 -3px -3px color($colors, medium);
+
+		box-sizing:								border-box;
+	}
+
+	.chat-message-selected-media {
+		width:										auto;
+		max-height:								100px;
+
+	} /* end chat-message-selected-media */
+
+	.chat-message-cancel-image {
+		color:										white;
+		font-size:								24px;
+
+		position:									relative;
+		top:											4px;
+		right:										26px;
+
+	} /* end chat-message-cancel-image */
+
+	.chat-message-textarea {
+		background-color:					white;
+		border:										1px solid color($colors, medium);
+
+		font-size:								14px;
+		resize:										both !important;
+
+		-webkit-user-select:			auto !important;
+		-khtml-user-select:				auto !important;
+		-moz-user-select:					auto !important;
+		-ms-user-select:					auto !important;
+		-o-user-select:						auto !important;
+		user-select:							auto !important;
+
+	} /* end chat-message-textarea */
+
+	.textarea {
+		resize:										both;
+
+	} /* end textarea */
+
+	.chat-icon-camera {
+		color:										color($colors, dark);								
+		font-size:								30px;
+
+		margin:										0 3px 0 3px;
+		padding:									12px 0 0 0;
+
+	} /* end chat-icon-camera */
+
+	.chat-send-button {
+		margin:										12px 3px 0 3px;
+
+	} /* end chat-send-button */
+
+	.media-viewer-page {
+		background-color:					#000000 !important;
+
+	} /* end media-viewer-page */
+
+	.media-viewer-image {
+		width:										auto;
+		height:										auto;
+
+		max-width:								100%;
+		max-height:								100%;
+
+		position:									absolute;
+		margin:										auto;
+		top:											0;
+		bottom:										0;
+		right:										0;
+		left:											0;
+
+	} /* end media-viewer-image */
+
+	.media-viewer-video {
+		width:										auto;
+		height:										auto;
+
+		max-width:								100%;
+		max-height:								100%;
+
+		position:									absolute;
+		margin:										auto;
+		top:											0;
+		bottom:										0;
+		right:										0;
+		left:											0;
+
+	} /* end media-viewer-video */

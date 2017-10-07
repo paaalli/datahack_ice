@@ -1,0 +1,27 @@
+page-digime-details {
+	.expand-link {
+		color:									color($colors, primary);
+	}
+
+	.filedetails-table {
+		color:									color($colors, dark);
+		font-size:							1.125rem;
+
+		padding:									10px;
+	}
+
+	TABLE {
+		border:									2px solid color($colors, primary);
+
+		width:									100%;
+	}
+
+	TD {
+		border-top:							1px solid color($colors, light);
+		border-bottom:					1px solid color($colors, light);
+
+		padding:								6px;
+
+	}
+
+} // end page-digime-details
